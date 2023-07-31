@@ -23,20 +23,19 @@ import com.starrocks.connector.spark.sql.conf.StarRocksConfig;
 import com.starrocks.connector.spark.sql.conf.WriteStarRocksConfig;
 import com.starrocks.connector.spark.sql.schema.StarRocksSchema;
 import com.starrocks.connector.spark.sql.write.StarRocksWriteBuilder;
+import org.apache.spark.sql.connector.catalog.SupportsRead;
 import org.apache.spark.sql.connector.catalog.SupportsWrite;
 import org.apache.spark.sql.connector.catalog.Table;
 import org.apache.spark.sql.connector.catalog.TableCapability;
-import org.apache.spark.sql.connector.expressions.Transform;
+import org.apache.spark.sql.connector.read.ScanBuilder;
 import org.apache.spark.sql.connector.write.LogicalWriteInfo;
 import org.apache.spark.sql.connector.write.WriteBuilder;
 import org.apache.spark.sql.types.StructType;
+import org.apache.spark.sql.util.CaseInsensitiveStringMap;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-public class StarRocksTable implements Table, SupportsWrite {
+public class StarRocksTable implements Table, SupportsRead, SupportsWrite {
 
     private static final Set<TableCapability> TABLE_CAPABILITY_SET = Collections.unmodifiableSet(
             new HashSet<>(
@@ -76,5 +75,10 @@ public class StarRocksTable implements Table, SupportsWrite {
     @Override
     public Set<TableCapability> capabilities() {
         return TABLE_CAPABILITY_SET;
+    }
+
+    @Override
+    public ScanBuilder newScanBuilder(CaseInsensitiveStringMap options) {
+        return null;
     }
 }
